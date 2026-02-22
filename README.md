@@ -38,15 +38,11 @@ The following technologies will be supported:
 
 ## Backend:
 
-- .NET 8 api
-- Event streaming
-- PostGreSQL
-- Redis
+> For full backend details, setup instructions, and architecture see the [Backend README](https://github.com/Norby257/simplySupplements-backend/blob/main/README.md).
 
-### Backend testing
-
-- Unit test cases
-- Load testing
+- .NET 8 REST API with event-driven, service-oriented architecture
+- PostgreSQL · Redis · Apache Kafka
+- Deployed via Docker, Kubernetes, and Terraform
 
 ## Infrastructure:
 
