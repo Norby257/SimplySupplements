@@ -1,4 +1,4 @@
-import './SearchBox.css';
+import "./SearchBox.css";
 
 const MicIcon = () => (
   <svg
@@ -11,8 +11,7 @@ const MicIcon = () => (
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+    strokeLinejoin="round">
     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
     <line x1="12" y1="19" x2="12" y2="23" />
@@ -20,7 +19,12 @@ const MicIcon = () => (
   </svg>
 );
 
-const SearchBox = () => {
+type Props = {
+  query: string;
+  onQueryChange: (q: string) => void;
+};
+
+const SearchBox = ({ query, onQueryChange }: Props) => {
   return (
     <div className="search-container" role="search">
       <label htmlFor="product-search" className="search-label">
@@ -33,6 +37,8 @@ const SearchBox = () => {
           className="search-input"
           placeholder="Search supplements..."
           autoComplete="off"
+          value={query}
+          onChange={(e) => onQueryChange(e.target.value)}
         />
         {/* Mic button uses aria-disabled instead of disabled so it remains
             keyboard-focusable and screen readers announce it as unavailable. */}
@@ -43,8 +49,7 @@ const SearchBox = () => {
             aria-label="Search by voice"
             aria-describedby="mic-tooltip"
             aria-disabled="true"
-            onClick={(e) => e.preventDefault()}
-          >
+            onClick={(e) => e.preventDefault()}>
             <MicIcon />
           </button>
           <div id="mic-tooltip" role="tooltip" className="tooltip">
