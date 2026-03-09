@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useVoiceSearch } from "../../hooks/useVoiceSearch";
 import "./SearchBox.css";
 
 const MicIcon = () => (
@@ -25,6 +27,18 @@ type Props = {
 };
 
 const SearchBox = ({ query, onQueryChange }: Props) => {
+  const {
+    isSupported,
+    isListening,
+    transcript,
+    error,
+    startListening,
+    stopListening
+  } = useVoiceSearch();
+
+  useEffect(() => {
+    if (transcript) onQueryChange(transcript);
+  }, [transcript, onQueryChange]);
   return (
     <div className="search-container" role="search">
       <label htmlFor="product-search" className="search-label">
@@ -40,20 +54,25 @@ const SearchBox = ({ query, onQueryChange }: Props) => {
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
         />
+
         {/* Mic button uses aria-disabled instead of disabled so it remains
             keyboard-focusable and screen readers announce it as unavailable. */}
         <div className="mic-wrapper">
           <button
             type="button"
             className="mic-button"
-            aria-label="Search by voice"
+            aria-label={isListening ? "Stop Listening" : "Search by voice"}
             aria-describedby="mic-tooltip"
-            aria-disabled="true"
-            onClick={(e) => e.preventDefault()}>
+            aria-disabled={!isSupported}
+            onClick={() => {
+              if (!isSupported) return;
+              if (isListening) stopListening();
+              else startListening();
+            }}>
             <MicIcon />
           </button>
           <div id="mic-tooltip" role="tooltip" className="tooltip">
-            Search by voice coming soon
+            {error}
           </div>
         </div>
       </div>
