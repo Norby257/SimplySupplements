@@ -39,6 +39,10 @@ const SearchBox = ({ query, onQueryChange }: Props) => {
   useEffect(() => {
     if (transcript) onQueryChange(transcript);
   }, [transcript, onQueryChange]);
+
+  useEffect(() => {
+    if (isListening) onQueryChange("");
+  }, [isListening, onQueryChange]);
   return (
     <div className="search-container" role="search">
       <label htmlFor="product-search" className="search-label">
@@ -60,7 +64,7 @@ const SearchBox = ({ query, onQueryChange }: Props) => {
         <div className="mic-wrapper">
           <button
             type="button"
-            className="mic-button"
+            className={`mic-button${isListening ? " mic-button--listening" : ""}`}
             aria-label={isListening ? "Stop Listening" : "Search by voice"}
             aria-describedby="mic-tooltip"
             aria-disabled={!isSupported}

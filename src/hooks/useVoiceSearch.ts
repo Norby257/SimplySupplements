@@ -7,7 +7,11 @@ type RecognitionInstance = {
   start: () => void;
   stop: () => void;
   abort: () => void;
-  onresult: ((event: { results: { [i: number]: { [i: number]: { transcript: string } } } }) => void) | null;
+  onresult:
+    | ((event: {
+        results: { [i: number]: { [i: number]: { transcript: string } } };
+      }) => void)
+    | null;
   onerror: ((event: { error: string }) => void) | null;
   onend: (() => void) | null;
 };
@@ -33,6 +37,14 @@ export function useVoiceSearch() {
   const recognitionRef = useRef<RecognitionInstance | null>(null);
 
   useEffect(() => {
+    return () => {
+      recognitionRef.current?.abort();
+    };
+  }, []);
+
+  const startListening = () => {
+    if (!isSupported || isListening) return;
+
     const SpeechRecognitionAPI = getSpeechRecognitionAPI();
     if (SpeechRecognitionAPI == null) return;
 
@@ -40,7 +52,6 @@ export function useVoiceSearch() {
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.lang = "en-US";
-
     recognition.onresult = (event) => {
       setTranscript(event.results[0][0].transcript);
     };
@@ -53,20 +64,12 @@ export function useVoiceSearch() {
     recognition.onend = () => {
       setIsListening(false);
     };
-
     recognitionRef.current = recognition;
 
-    return () => {
-      recognition.abort();
-    };
-  }, []);
-
-  const startListening = () => {
-    if (!isSupported || isListening) return;
     setTranscript("");
     setError("");
     setIsListening(true);
-    recognitionRef.current?.start();
+    recognitionRef.current.start();
   };
 
   const stopListening = () => {
@@ -74,5 +77,12 @@ export function useVoiceSearch() {
     recognitionRef.current?.stop();
   };
 
-  return { isSupported, isListening, transcript, error, startListening, stopListening };
+  return {
+    isSupported,
+    isListening,
+    transcript,
+    error,
+    startListening,
+    stopListening
+  };
 }
