@@ -76,9 +76,17 @@ const SearchBox = ({ query, onQueryChange }: Props) => {
             <MicIcon />
           </button>
           <div id="mic-tooltip" role="tooltip" className="tooltip">
-            {error}
+            {error || "Your voice is processed by your browser and not stored."}
           </div>
         </div>
+      </div>
+      <div
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {isListening ? "Listening. Speak now." : transcript ? `Heard: ${transcript}` : ""}
       </div>
     </div>
   );
