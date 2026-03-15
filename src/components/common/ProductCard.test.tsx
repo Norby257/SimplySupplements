@@ -1,14 +1,22 @@
-import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
-import ProductCard from './ProductCard';
-import type { Product } from '../../types/Product';
+import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
+import ProductCard from "./ProductCard";
+import type { Product } from "../../types/Product";
+import { CartProvider, useCart } from "../../context/CartContext";
+import userEvent from "@testing-library/user-event";
 
 const MOCK_PRODUCT: Product = {
   id: 1,
-  name: 'Vitamin D3',
-  description: 'Supports immune function.',
-  price: '$19.99',
-  category: 'Vitamins',
+  name: "Vitamin D3",
+  description: "Supports immune function.",
+  price: "$19.99",
+  category: "Vitamins"
+};
+
+// this is to set up integration testing for the cart context flow.
+const CartDisplay = () => {
+  const { totalItems } = useCart();
+  return <span data-testid="total">{totalItems}</span>;
 };
 
 const renderCard = (overrides?: Partial<{ tabIndex: number }>) => {
@@ -17,67 +25,84 @@ const renderCard = (overrides?: Partial<{ tabIndex: number }>) => {
   const onFocus = vi.fn();
   return {
     ...render(
-      <ProductCard
-        product={MOCK_PRODUCT}
-        tabIndex={overrides?.tabIndex ?? 0}
-        onKeyDown={onKeyDown}
-        onFocus={onFocus}
-        ref={ref}
-      />
+      <CartProvider>
+        <CartDisplay />
+        <ProductCard
+          product={MOCK_PRODUCT}
+          tabIndex={overrides?.tabIndex ?? 0}
+          onKeyDown={onKeyDown}
+          onFocus={onFocus}
+          ref={ref}
+        />
+      </CartProvider>
     ),
     onKeyDown,
-    onFocus,
+    onFocus
   };
 };
 
-describe('ProductCard', () => {
-  it('renders product name and price', () => {
+describe("ProductCard", () => {
+  it("renders product name and price", () => {
     renderCard();
-    expect(screen.getByText('Vitamin D3')).toBeInTheDocument();
-    expect(screen.getByText('$19.99')).toBeInTheDocument();
+    expect(screen.getByText("Vitamin D3")).toBeInTheDocument();
+    expect(screen.getByText("$19.99")).toBeInTheDocument();
   });
 
   it('renders with role="gridcell" so it participates in the ARIA grid', () => {
     renderCard();
-    expect(screen.getByRole('gridcell')).toBeInTheDocument();
+    expect(screen.getByRole("gridcell")).toBeInTheDocument();
   });
 
-  it('has a descriptive aria-label combining name and price', () => {
+  it("has a descriptive aria-label combining name and price", () => {
     renderCard();
-    const cell = screen.getByRole('gridcell');
-    expect(cell).toHaveAttribute('aria-label', 'Vitamin D3, $19.99');
+    const cell = screen.getByRole("gridcell");
+    expect(cell).toHaveAttribute("aria-label", "Vitamin D3, $19.99");
   });
 
-  it('has tabIndex=0 when it is the focused card (roving tabindex)', () => {
+  it("has tabIndex=0 when it is the focused card (roving tabindex)", () => {
     renderCard({ tabIndex: 0 });
-    expect(screen.getByRole('gridcell')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole("gridcell")).toHaveAttribute("tabindex", "0");
   });
 
-  it('has tabIndex=-1 when it is not the focused card', () => {
+  it("has tabIndex=-1 when it is not the focused card", () => {
     renderCard({ tabIndex: -1 });
-    expect(screen.getByRole('gridcell')).toHaveAttribute('tabindex', '-1');
+    expect(screen.getByRole("gridcell")).toHaveAttribute("tabindex", "-1");
   });
 
   it('renders the "Add to cart" button with an accessible label', () => {
     renderCard();
-    const button = screen.getByRole('button', { name: /add vitamin d3 to cart/i });
+    const button = screen.getByRole("button", {
+      name: /add vitamin d3 to cart/i
+    });
     expect(button).toBeInTheDocument();
   });
 
   it('"Add to cart" button has tabIndex=-1 so Tab skips it during grid navigation', () => {
     renderCard();
-    const button = screen.getByRole('button', { name: /add vitamin d3 to cart/i });
-    expect(button).toHaveAttribute('tabindex', '-1');
+    const button = screen.getByRole("button", {
+      name: /add vitamin d3 to cart/i
+    });
+    expect(button).toHaveAttribute("tabindex", "-1");
   });
 
-  it('renders product category', () => {
+  it("renders product category", () => {
     renderCard();
-    expect(screen.getByText('Vitamins')).toBeInTheDocument();
+    expect(screen.getByText("Vitamins")).toBeInTheDocument();
   });
 
-  it('price span has aria-label for unambiguous screen reader output', () => {
+  it("price span has aria-label for unambiguous screen reader output", () => {
     renderCard();
     const price = screen.getByLabelText(/price: \$19\.99/i);
     expect(price).toBeInTheDocument();
+  });
+
+  it('clicking "Add to cart" adds the product to the cart', async () => {
+    const user = userEvent.setup();
+    renderCard();
+    expect(screen.getByTestId("total")).toHaveTextContent("0");
+    await user.click(
+      screen.getByRole("button", { name: /add vitamin d3 to cart/i })
+    );
+    expect(screen.getByTestId("total")).toHaveTextContent("1");
   });
 });
