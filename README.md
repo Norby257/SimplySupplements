@@ -11,7 +11,7 @@ The following technologies will be supported:
 - Aria Patterns
 - Screen Readers (NVDA, VoiceOver)
 - Keyboard navigation
-- Search by voice (stretch goal)
+- Search by voice
 - Event-Driven Architecture
 - Kafka message bus and message processing
 - Database schema design to support 100K inventory, orders, and user data.
@@ -20,20 +20,18 @@ The following technologies will be supported:
 
 ## Core frontend:
 
-- React 18 with Typescript
-- Next.js 14
+- React 19 with Typescript
+- Vite
 
 ### A11y Tooling:
 
-- @axe-core/react (for automated testing)
 - eslint-plugin-jsx-a11y (linting)
 - react-aria (accessible hooks)
 
 ### Testing:
 
-- Jest + React testing library
+- Vitest + React testing library
 - Playwright (E2E with a11y checks)
-- axe DevTools
 - NVDA/VoiceOver testing
 
 ## Backend:
@@ -60,4 +58,6 @@ To ensure quality code, the test strategy includes the following:
 
 # Installation - coming soon
 
-# Usage - coming soon
+# Usage
+
+To run the tests locally, run `vitest run`. Alternatively, `npm test` works too.
