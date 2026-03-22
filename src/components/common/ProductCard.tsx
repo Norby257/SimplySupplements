@@ -1,6 +1,7 @@
-import { forwardRef } from 'react';
-import type { Product } from '../../types/Product';
-import './ProductCard.css';
+import { forwardRef } from "react";
+import type { Product } from "../../types/Product";
+import { useCart } from "../../context/CartContext";
+import "./ProductCard.css";
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +21,7 @@ interface ProductCardProps {
  */
 const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
   ({ product, tabIndex, onKeyDown, onFocus }, ref) => {
+    const { addToCart } = useCart();
     return (
       <div
         ref={ref}
@@ -28,8 +30,7 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
         onFocus={onFocus}
-        aria-label={`${product.name}, ${product.price}`}
-      >
+        aria-label={`${product.name}, ${product.price}`}>
         {/* Decorative placeholder image area */}
         <div className="product-card__image" aria-hidden="true">
           <span className="product-card__image-icon">⬜</span>
@@ -43,16 +44,15 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
           <div className="product-card__footer">
             <span
               className="product-card__price"
-              aria-label={`Price: ${product.price}`}
-            >
+              aria-label={`Price: ${product.price}`}>
               {product.price}
             </span>
             <button
+              onClick={() => addToCart(product)}
               type="button"
               className="product-card__cta"
               tabIndex={-1}
-              aria-label={`Add ${product.name} to cart`}
-            >
+              aria-label={`Add ${product.name} to cart`}>
               Add to cart
             </button>
           </div>
@@ -62,6 +62,6 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
   }
 );
 
-ProductCard.displayName = 'ProductCard';
+ProductCard.displayName = "ProductCard";
 
 export default ProductCard;
