@@ -56,8 +56,17 @@ To ensure quality code, the test strategy includes the following:
 - Automated testing to ensure frontend components are WCAG compliant
 - Manual testing to ensure compatibility with screen-reader technologies
 
-# Installation - coming soon
+# Installation
+
+There are two different ways to install and run this locally - either via docker or npm.
+With either approach, first clone the repository.
+Then if using docker, run the following docker commands to build and run the app:
+`docker build -t simply-supplements .`
+`docker run -p 8080:80 simply-supplements`
+
+If running via npm, then run `npm ci` and `npm run dev`
 
 # Usage
 
-To run the tests locally, run `vitest run`. Alternatively, `npm test` works too.
+To run the tests locally, run `npm test`.
+To run the end to end tests, run `npx playwright test`. This command will automatically start the dev sercver.
