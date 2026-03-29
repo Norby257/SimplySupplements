@@ -39,7 +39,7 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
 
         <div className="product-card__body">
           <p className="product-card__category">{product.category}</p>
-          <h3 className="product-card__name">{product.name}</h3>
+          <h2 className="product-card__name">{product.name}</h2>
           <p className="product-card__description">{product.description}</p>
           <div className="product-card__footer">
             <span
