@@ -88,16 +88,17 @@ const ProductsPage = () => {
             <p> No products found for "{query}".</p>
           ) : (
             filteredProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                tabIndex={focusedIndex === index ? 0 : -1}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                onFocus={() => setFocusedIndex(index)}
-                ref={(el) => {
-                  itemRefs.current[index] = el;
-                }}
-              />
+              <div role="row" key={product.id}>
+                <ProductCard
+                  product={product}
+                  tabIndex={focusedIndex === index ? 0 : -1}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onFocus={() => setFocusedIndex(index)}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
+                />
+              </div>
             ))
           )}
         </div>
