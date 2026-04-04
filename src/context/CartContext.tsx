@@ -46,7 +46,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 export const CartStatus = () => {
   const { totalItems } = useCart();
   return (
-    <div role="status" aria-live="polite" aria-label={`${totalItems} in cart`}>
+    <div className="cart-status" role="status" aria-live="polite" aria-label={`${totalItems} in cart`}>
       {totalItems > 0 && (
         <span className="cart-badge" aria-hidden="true">
           {totalItems}
