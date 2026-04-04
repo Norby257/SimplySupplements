@@ -8,7 +8,7 @@ const Cart = () => {
     (sum, i) => sum + parsePrice(i.product.price) * i.quantity,
     0
   );
-
+  //TODO: consider converting this into a checkout page component
   return (
     <div>
       {items.length === 0 ? (
