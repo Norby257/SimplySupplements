@@ -1,6 +1,7 @@
 import { createContext, useState, useContext } from "react";
 import type { CartItem } from "../types/CartItem";
 import type { Product } from "../types/Product";
+import "./CartStatus.css";
 
 //declaring the CartContext type
 type CartContextType = {
@@ -36,8 +37,22 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <CartContext.Provider
       value={{ items, addToCart, removeFromCart, totalItems }}>
+      <CartStatus />
       {children}
     </CartContext.Provider>
+  );
+};
+
+export const CartStatus = () => {
+  const { totalItems } = useCart();
+  return (
+    <div role="status" aria-live="polite" aria-label={`${totalItems} in cart`}>
+      {totalItems > 0 && (
+        <span className="cart-badge" aria-hidden="true">
+          {totalItems}
+        </span>
+      )}
+    </div>
   );
 };
 

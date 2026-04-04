@@ -16,9 +16,7 @@ function App() {
           <button
             onClick={() => setIsCartOpen(!isCartOpen)}
             onKeyDown={(e) => e.key === "Enter" && setIsCartOpen(!isCartOpen)}
-            aria-label={isCartOpen ? "close cart" : "Open cart"}>
-            //TODO: render total items here
-          </button>
+            aria-label={isCartOpen ? "close cart" : "Open cart"}></button>
           <ProductsPage />
         </main>
       </CartProvider>
