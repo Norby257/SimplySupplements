@@ -1,3 +1,5 @@
+import type { CartItem } from "../types/CartItem";
+
 export const parsePrice = (price: string): number => {
   // error handling - infinity/NAN etc
   try {
@@ -11,3 +13,6 @@ export const parsePrice = (price: string): number => {
     return 0;
   }
 };
+
+export const calcSubtotal = (items: CartItem[]): number =>
+  items.reduce((sum, i) => sum + parsePrice(i.product.price) * i.quantity, 0);

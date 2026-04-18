@@ -110,3 +110,17 @@
 .product-card__cta:hover {
   background-color: #1e40af;
 }
+
+/* ── Cart item action slot ── */
+.product-card__cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Cart item list ── */
+.cart-item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
