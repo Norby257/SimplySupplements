@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import type { Product } from "../../types/Product";
 import { useCart } from "../../context/CartContext";
-import "./ProductCard.css";
+import ProductCardShell from "./ProductCardShell";
 
 interface ProductCardProps {
   product: Product;
@@ -31,22 +31,9 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
         onKeyDown={onKeyDown}
         onFocus={onFocus}
         aria-label={`${product.name}, ${product.price}`}>
-        {/* Decorative placeholder image area */}
-        <div className="product-card__image" aria-hidden="true">
-          <span className="product-card__image-icon">⬜</span>
-          <span className="product-card__image-label">Product image</span>
-        </div>
-
-        <div className="product-card__body">
-          <p className="product-card__category">{product.category}</p>
-          <h2 className="product-card__name">{product.name}</h2>
-          <p className="product-card__description">{product.description}</p>
-          <div className="product-card__footer">
-            <span
-              className="product-card__price"
-              aria-label={`Price: ${product.price}`}>
-              {product.price}
-            </span>
+        <ProductCardShell
+          product={product}
+          action={
             <button
               onClick={() => addToCart(product)}
               type="button"
@@ -55,8 +42,8 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
               aria-label={`Add ${product.name} to cart`}>
               Add to cart
             </button>
-          </div>
-        </div>
+          }
+        />
       </div>
     );
   }
