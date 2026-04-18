@@ -1,14 +1,12 @@
 import { useCart } from "../../context/CartContext";
-import { parsePrice } from "../../utils/parsePrice";
+import { calcSubtotal } from "../../utils/parsePrice";
 
-const Cart = () => {
+type CartProps = { onProceedToCheckout: () => void };
+
+const Cart = ({ onProceedToCheckout }: CartProps) => {
   const { items, removeFromCart, totalItems } = useCart();
+  const subTotal = calcSubtotal(items);
 
-  const subTotal = items.reduce(
-    (sum, i) => sum + parsePrice(i.product.price) * i.quantity,
-    0
-  );
-  //TODO: consider converting this into a checkout page component
   return (
     <div>
       {items.length === 0 ? (
@@ -29,6 +27,11 @@ const Cart = () => {
           ))}
           <p> Items in cart: {totalItems}</p>
           <p> Subtotal price: {subTotal.toFixed(2)}</p>
+          <button
+            aria-label="Proceed to checkout"
+            onClick={onProceedToCheckout}>
+            Proceed to Checkout
+          </button>
         </>
       )}
     </div>
