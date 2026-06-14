@@ -66,6 +66,26 @@ Then if using docker, run the following docker commands to build and run the app
 
 If running via npm, then run `npm ci` and `npm run dev`
 
+### Docker Compose (Frontend + Backend)
+
+To run the full stack locally using Docker Compose, both repositories must be cloned as siblings:
+
+```
+parent-directory/
+├── SimplySupplements/          ← this repo
+└── simplySupplements-backend/  ← backend repo
+```
+
+From the `SimplySupplements/` directory, run:
+
+```bash
+docker compose up --build
+```
+
+The frontend is available at `http://localhost:8080`. API requests to `/api/` are automatically proxied to the backend container, so no CORS configuration is needed.
+
+To stop: `docker compose down`
+
 # Usage
 
 To run the tests locally, run `npm test`.

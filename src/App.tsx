@@ -3,7 +3,7 @@ import SkipLink from "./components/layout/SkipLink";
 import NavBar from "./components/layout/NavBar";
 import ProductsPage from "./pages/ProductsPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import { CartProvider } from "./context/CartContext";
+import { CartProvider, CartStatus } from "./context/CartContext";
 import { useState } from "react";
 
 type View = "products" | "checkout";
@@ -13,6 +13,7 @@ function App() {
   return (
     <>
       <CartProvider>
+        <CartStatus />
         <SkipLink />
         <NavBar
           isCartOpen={currentView === "checkout"}
