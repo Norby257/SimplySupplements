@@ -13,7 +13,7 @@ type CartContextType = {
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+export const CartProvider = ({ children }: { children?: React.ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
 
   const removeFromCart = (productId: number) => {
